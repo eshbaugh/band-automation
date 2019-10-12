@@ -1,21 +1,24 @@
 #! /usr/bin/python3
 
+##########################################################################
+#  Move *.wav files from source to destination, creating the destination 
+#  directory if necessary.
+##########################################################################
+
 import glob
 import os
 import datetime
 import shutil
 
 inputDir = '/run/media/righttap/Samsung USB/Recordings/*'
-outputDir = '/media/CR/2019/'
+outputDir = '/media/CR/'
 
 dd = datetime.datetime.today()
-
-outputDir = outputDir + dd.strftime( '%m%d') + '/'
+outputDir = outputDir + dd.strftime( '%Y/%m%d') + '/source/'
 
 if not os.path.exists( outputDir ):
-    os.mkdir( outputDir, 777 )
-
-print( outputDir )
+    print( 'Creating Directory ', outputDir )
+    os.makedirs( outputDir, 777 )
 
 files = glob.glob( inputDir )
 print ( files )
@@ -26,5 +29,3 @@ for inFile in files:
     print( inFile )
     print( 'Moving ', inFile, ' to ', outputDir )
     shutil.move( inFile, outputDir )
-
-print( 'here' )
