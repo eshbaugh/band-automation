@@ -59,7 +59,7 @@ def main():
 	outputDir = au.getOutputDir( outputBaseDir )
 	au.moveWaves( inputDir, outputDir + 'source/' ) 
 	
-	sc = soundConvert( outputDir, "JUNK")
+	sc = soundConvert( outputDir + 'source/', "JUNK")
 	sc.wav2mp3()
 
 # Python 3 style of __name__ == '__main__'
