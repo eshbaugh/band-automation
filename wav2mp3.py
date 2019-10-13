@@ -4,26 +4,32 @@ import glob
 from pydub import AudioSegment
 from pydub import effects
 
-filePath = '/media/CR/2019/Sept27/927/'
-minTrackLength = 150 # seconds (2.5 min)
+class soundConvert:
 
-wavFilePath = filePath + '*'
-files = glob.glob( wavFilePath )
+    minTrackLength = 150 # seconds (2.5 min)
+    def __init__( self, inDir, outDir ):
+        self.inDir = inDir
+        self.outDir = outDir
 
-for in_file in files:
-    if not in_file.endswith( '.wav') :
-        continue
+    def wav2mp3():
+        wavFilePath = self.inDir + '*'
+        files = glob.glob( wavFilePath )
 
-    out_file = in_file.replace( '.wav', '.mp3' )
+        for in_file in files:
+            if not in_file.endswith( '.wav') :
+                continue
 
-    # convert wav to mp3                                                            
-    sound = AudioSegment.from_wav(in_file)
-    trackLength = len(sound)/1000
-    if  trackLength < minTrackLength:
-        print( 'Skipping file:', in_file, ' Track Length ', trackLength, ' is less than minium track length ', minTrackLength ) 
-        continue
+            # TODO Use output Directory as opposed to keeping all created files in the input directory
+            out_file = in_file.replace( '.wav', '.mp3' )
 
-    print( 'Creating:', out_file, ' audio track length:', len(sound)/1000 , ' (sec)' )
+            # convert wav to mp3                                                            
+            sound = AudioSegment.from_wav(in_file)
+            trackLength = len(sound)/1000
+            if  trackLength < minTrackLength:
+                print( 'Skipping file:', in_file, ' Track Length ', trackLength, '(sec) is less than minium track length ', minTrackLength, '(sec)' ) 
+                continue
 
-    goodVolumeSound = effects.normalize( sound )
-    goodVolumeSound.export(out_file, format='mp3')
+            print( 'Creating:', out_file, ' audio track length:', trackLength , '(sec)' )
+
+            goodVolumeSound = effects.normalize( sound )
+            goodVolumeSound.export(out_file, format='mp3')
