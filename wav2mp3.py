@@ -11,7 +11,7 @@ class soundConvert:
         self.inDir = inDir
         self.outDir = outDir
 
-    def wav2mp3():
+    def wav2mp3( self ):
         wavFilePath = self.inDir + '*'
         files = glob.glob( wavFilePath )
 
