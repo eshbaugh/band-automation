@@ -4,7 +4,7 @@ import datetime
 import os
 import glob
 import shutil
-from wav2mp3 import soundConvert
+from soundFileConversion import soundConvert
 
 class autoUtils:
 
@@ -51,16 +51,20 @@ class autoUtils:
 				shutil.move( inFile, outputDir )
 
 
-def main():
-	au = autoUtils()
+def uploadWavOutputMP3():
 	outputBaseDir = '/media/CR/'
 	inputDir = '/run/media/righttap/Samsung USB/Recordings/' 
 	inputDir = '/media/CR/2019/test/'
+
+	au = autoUtils()
 	outputDir = au.getOutputDir( outputBaseDir )
 	au.moveWaves( inputDir, outputDir + 'source/' ) 
 	
 	sc = soundConvert( outputDir + 'source/', "JUNK")
 	sc.wav2mp3()
+
+def main():
+	uploadWavOutputMP3()
 
 # Python 3 style of __name__ == '__main__'
 main()

@@ -2,6 +2,9 @@
 *.py[cod]
 __pycache__
 
+# Test results directory
+testOutput
+
 # Hidden files.
 .*
 
