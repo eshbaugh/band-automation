@@ -1,0 +1,12 @@
+# Compiled python files.
+*.py[cod]
+__pycache__
+
+# Hidden files.
+.*
+
+# But not this file!
+!.gitignore
+
+# And not the Visual Studio Code config file 
+!.vscode
