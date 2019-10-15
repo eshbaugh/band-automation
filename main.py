@@ -24,7 +24,11 @@ class autoUtils:
 		if not os.path.exists( outputDir ):
 			outputSourceDir = outputDir + 'source/' 
 			print( 'Creating Directory path ', outputSourceDir )
-			os.makedirs( outputSourceDir, 777 )
+			os.makedirs( outputSourceDir, mode=0o777, exist_ok=True ) # 0o specificies Octal Numbering System
+
+			# Makedirs crates the least dignificat directory(source in this case) with permission 
+			# dr----x--t. 2 jerry jerry 4.0K Oct 14 20:33 source
+			#os.chmod( outputDir, 0777, )
 
 		return outputDir
 		
@@ -33,7 +37,7 @@ class autoUtils:
 	#  Move *.wav files from source to destination, creating the destination 
 	#  directory if necessary.
 	##########################################################################
-	def moveWaves( self, inputDir, outputDir, copyNoDelete = True ):
+	def moveWaves( self, inputDir, outputDir, copyNoDelete = False ):
 
 		print( inputDir )
 
@@ -54,7 +58,6 @@ class autoUtils:
 def uploadWavOutputMP3():
 	outputBaseDir = '/media/CR/'
 	inputDir = '/run/media/righttap/Samsung USB/Recordings/' 
-	inputDir = '/media/CR/2019/test/'
 
 	au = autoUtils()
 	outputDir = au.getOutputDir( outputBaseDir )
@@ -63,8 +66,17 @@ def uploadWavOutputMP3():
 	sc = soundConvert( outputDir + 'source/', "JUNK")
 	sc.wav2mp3()
 
+def testHarnes():
+	outputBaseDir = './tests/testOutput/' 
+	inputDir = './tests/wavs/'
+
+	au = autoUtils()
+	outputDir = au.getOutputDir( outputBaseDir )
+	au.moveWaves( inputDir, outputDir + 'source/', True ) 
+
 def main():
-	uploadWavOutputMP3()
+	testHarnes()
+	#uploadWavOutputMP3()
 
 # Python 3 style of __name__ == '__main__'
 main()
