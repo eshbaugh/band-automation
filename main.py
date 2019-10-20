@@ -54,6 +54,11 @@ class autoUtils:
 				print( 'Moving ', inFile, ' to ', outputDir )
 				shutil.move( inFile, outputDir )
 
+	def printFiles( self, inPath ):
+		for path, dirs, files in os.walk( inPath ):
+			for ff in files:
+				print( path, ff ) 
+
 
 def uploadWavOutputMP3():
 	outputBaseDir = '/media/CR/'
@@ -66,17 +71,26 @@ def uploadWavOutputMP3():
 	sc = soundConvert( outputDir + 'source/', "JUNK")
 	sc.wav2mp3()
 
-def testHarnes():
+
+def testHarness():
 	outputBaseDir = './tests/testOutput/' 
 	inputDir = './tests/wavs/'
 
 	au = autoUtils()
+
+	print( "----------------- Initial Input Directory --------------")
+	au.printFiles( inputDir )
+	print( "----------------- Initial Output Directory --------------")
+	au.printFiles( outputBaseDir )
+
+	return
+
 	outputDir = au.getOutputDir( outputBaseDir )
 	au.moveWaves( inputDir, outputDir + 'source/', True ) 
 
 def main():
-	testHarnes()
-	#uploadWavOutputMP3()
+	testHarness()
+#	uploadWavOutputMP3()
 
 # Python 3 style of __name__ == '__main__'
 main()
