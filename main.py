@@ -13,10 +13,10 @@ class autoUtils:
 		print( 'In constructor for auto utils')
 
 	#######################################################################################
-	# getOutputDir()  will compute a directory name based on the current year and date
+	# createDateCodedOutputDirectory()  will compute a directory name based on the current year and date
 	# then create the full path including a /source subdirectory at the lowest level 
 	#######################################################################################
-	def getOutputDir( self, outputBaseDir ):
+	def createDateCodedOutputDirectory( self, outputBaseDir ):
 
 		dd = datetime.datetime.today()
 		outputDir = outputBaseDir + dd.strftime( '%Y/%m%d/') 
@@ -57,7 +57,14 @@ class autoUtils:
 	def printFiles( self, inPath ):
 		for path, dirs, files in os.walk( inPath ):
 			for ff in files:
-				print( path, ff ) 
+				fullFilename = path + '/' + ff
+				print( fullFilename ) 
+
+	def printFiles( self, inPath ):
+		for path, dirs, files in os.walk( inPath ):
+			for ff in files:
+				fullFilename = path + '/' + ff
+				print( fullFilename ) 
 
 
 def uploadWavOutputMP3():
@@ -65,7 +72,7 @@ def uploadWavOutputMP3():
 	inputDir = '/run/media/righttap/Samsung USB/Recordings/' 
 
 	au = autoUtils()
-	outputDir = au.getOutputDir( outputBaseDir )
+	outputDir = au.createDateCodedOutputDirectory( outputBaseDir )
 	au.moveWaves( inputDir, outputDir + 'source/' ) 
 	
 	sc = soundConvert( outputDir + 'source/', "JUNK")
@@ -78,15 +85,18 @@ def testHarness():
 
 	au = autoUtils()
 
-	print( "----------------- Initial Input Directory --------------")
-	au.printFiles( inputDir )
-	print( "----------------- Initial Output Directory --------------")
-	au.printFiles( outputBaseDir )
+	if os.path.exists( outputBaseDir ):
+		shutil.rmtree( outputBaseDir )
 
-	return
+	print( "----------------- Initial Directory --------------")
+	au.printFiles( './tests/' )
 
-	outputDir = au.getOutputDir( outputBaseDir )
+	outputDir = au.createDateCodedOutputDirectory( outputBaseDir )
+
 	au.moveWaves( inputDir, outputDir + 'source/', True ) 
+
+	print( "----------------- Output Dir Created Directory --------------")
+	au.printFiles( './tests/' )
 
 def main():
 	testHarness()
