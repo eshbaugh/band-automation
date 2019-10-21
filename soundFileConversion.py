@@ -3,33 +3,39 @@
 import glob
 from pydub import AudioSegment
 from pydub import effects
+import os
 
 class soundConvert:
-    def __init__( self, inDir, outDir ):
-        self.inDir = inDir
-        self.outDir = outDir
-        self.minTrackLength = 150 # seconds (2.5 min)
+    def __init__( self ):
+        print( "Sound convert class initialization method")
 
-    def wav2mp3( self ):
-        wavFilePath = self.inDir + '*'
+    ##########################################
+    # wav to mp3 coversion
+    #   input Directory
+    #   output Directoy 
+    #   minimum track legnth to convert  (in seconds)
+    ##########################################
+
+    def wav2mp3( self, inDir, outDir, minTrackLength = 150 ):
+        wavFilePath = inDir + '*'
         files = glob.glob( wavFilePath )
 
-        for in_file in files:
-            if not in_file.endswith( '.wav') :
+        for inFile in files:
+            if not inFile.endswith( '.wav') :
                 continue
 
-            # TODO Use output Directory as opposed to keeping all created files in the input directory
-            out_file = in_file.replace( '.wav', '.mp3' )
+            filename = os.path.basename( inFile )
+            outFile = outDir + filename.replace( '.wav', '.mp3' )
 
             # convert wav to mp3                                                            
-            print( 'Computing track length for file:', in_file)
-            sound = AudioSegment.from_wav(in_file)
+            print( 'Computing track length for file:', inFile)
+            sound = AudioSegment.from_wav(inFile)
             trackLength = len(sound)/1000
-            if  trackLength < self.minTrackLength:
-                print( 'Skipping mp3 conversion for file:', in_file, ' Track Length ', trackLength, '(sec) is less than minium track length ', self.minTrackLength, '(sec)' ) 
+            if  trackLength < minTrackLength:
+                print( 'Skipping mp3 conversion for file:', inFile, ' Track Length ', trackLength, '(sec) is less than minium track length ', minTrackLength, '(sec)' ) 
                 continue
 
-            print( 'Creating:', out_file, ' audio track length:', trackLength , '(sec)' )
+            print( 'Creating:', outFile, ' audio track length:', trackLength , '(sec)' )
 
             goodVolumeSound = effects.normalize( sound )
-            goodVolumeSound.export(out_file, format='mp3')
+            goodVolumeSound.export(outFile, format='mp3')

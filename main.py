@@ -73,10 +73,11 @@ def uploadWavOutputMP3():
 
 	au = autoUtils()
 	outputDir = au.createDateCodedOutputDirectory( outputBaseDir )
-	au.moveWaves( inputDir, outputDir + 'source/' ) 
+	sourceDir = outputDir + 'source/'
+	au.moveWaves( inputDir, sourceDir ) 
 	
-	sc = soundConvert( outputDir + 'source/', "JUNK")
-	sc.wav2mp3()
+	sc = soundConvert( )
+	sc.wav2mp3( sourceDir, outputDir )
 
 
 def testHarness():
@@ -92,10 +93,17 @@ def testHarness():
 	au.printFiles( './tests/' )
 
 	outputDir = au.createDateCodedOutputDirectory( outputBaseDir )
+	sourceDir = outputDir + 'source/'
 
-	au.moveWaves( inputDir, outputDir + 'source/', True ) 
+	au.moveWaves( inputDir, sourceDir, True ) 
 
 	print( "----------------- Output Dir Created Directory --------------")
+	au.printFiles( './tests/' )
+
+	sc = soundConvert( )
+	sc.wav2mp3( sourceDir, outputDir, 200 )
+
+	print( "----------------- postConversion Dir Created Directory --------------")
 	au.printFiles( './tests/' )
 
 def main():
