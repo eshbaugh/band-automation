@@ -37,7 +37,7 @@ class autoUtils:
 	#  Move *.wav files from source to destination, creating the destination 
 	#  directory if necessary.
 	##########################################################################
-	def moveWaves( self, inputDir, outputDir, copyNoDelete = False ):
+	def moveFiles( self, inputDir, outputDir, extension = '.wav', copyNoDelete = False ):
 
 		print( inputDir )
 
@@ -45,7 +45,7 @@ class autoUtils:
 		print( files )
 
 		for inFile in files:
-			if not inFile.endswith( '.wav') :
+			if not inFile.endswith( extension ) :
 				continue
 			if copyNoDelete:
 				print( 'Copying ', inFile, ' to ', outputDir )
@@ -74,13 +74,13 @@ def uploadWavOutputMP3():
 	au = autoUtils()
 	outputDir = au.createDateCodedOutputDirectory( outputBaseDir )
 	sourceDir = outputDir + 'source/'
-	au.moveWaves( inputDir, sourceDir ) 
+	au.moveFiles( inputDir, sourceDir, '.wav' ) 
 	
 	sc = soundConvert( )
 	sc.wav2mp3( sourceDir, outputDir )
 
 
-def testHarness():
+def testWavToMP3():
 	outputBaseDir = './tests/testOutput/' 
 	inputDir = './tests/wavs/'
 
@@ -95,19 +95,41 @@ def testHarness():
 	outputDir = au.createDateCodedOutputDirectory( outputBaseDir )
 	sourceDir = outputDir + 'source/'
 
-	au.moveWaves( inputDir, sourceDir, True ) 
-
-	print( "----------------- Output Dir Created Directory --------------")
-	au.printFiles( './tests/' )
+	au.moveFiles( inputDir, sourceDir, '.wav', True ) 
 
 	sc = soundConvert( )
-	sc.wav2mp3( sourceDir, outputDir, 200 )
+	sc.wavToMP3( sourceDir, outputDir, 200 )
 
-	print( "----------------- postConversion Dir Created Directory --------------")
+	print( "----------------- postConversion Directory --------------")
+	au.printFiles( './tests/' )
+
+def testMP3ToWav():
+	outputBaseDir = './tests/testOutput/' 
+	inputDir = './tests/mp3s/'
+
+	au = autoUtils()
+
+	if os.path.exists( outputBaseDir ):
+		shutil.rmtree( outputBaseDir )
+
+	print( "----------------- Initial Directory --------------")
+	au.printFiles( './tests/' )
+
+	outputDir = au.createDateCodedOutputDirectory( outputBaseDir )
+	sourceDir = outputDir + 'source/'
+
+	au.moveFiles( inputDir, sourceDir, '.mp3', True ) 
+
+	sc = soundConvert( )
+	sc.MP3ToWav( sourceDir, outputDir )
+
+	print( "----------------- postConversion Directory --------------")
 	au.printFiles( './tests/' )
 
 def main():
-	testHarness()
+#	testWavToMP3()
+
+	testMP3ToWav()
 #	uploadWavOutputMP3()
 
 # Python 3 style of __name__ == '__main__'

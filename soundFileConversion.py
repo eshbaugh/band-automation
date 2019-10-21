@@ -16,7 +16,7 @@ class soundConvert:
     #   minimum track legnth to convert  (in seconds)
     ##########################################
 
-    def wav2mp3( self, inDir, outDir, minTrackLength = 150 ):
+    def wavToMP3( self, inDir, outDir, minTrackLength = 150 ):
         wavFilePath = inDir + '*'
         files = glob.glob( wavFilePath )
 
@@ -39,3 +39,27 @@ class soundConvert:
 
             goodVolumeSound = effects.normalize( sound )
             goodVolumeSound.export(outFile, format='mp3')
+
+    def MP3ToWav( self, inDir, outDir, minTrackLength = 0 ):
+        mp3FilePath = inDir + '*'
+        files = glob.glob( mp3FilePath )
+
+        for inFile in files:
+            if not inFile.endswith( '.mp3') :
+                continue
+
+            filename = os.path.basename( inFile )
+            outFile = outDir + filename.replace( '.mp3', '.wav' )
+
+            # convert wav to mp3                                                            
+            print( 'Computing track length for file:', inFile)
+            sound = AudioSegment.from_mp3(inFile)
+            trackLength = len(sound)/1000
+            if  trackLength < minTrackLength:
+                print( 'Skipping mp3 conversion for file:', inFile, ' Track Length ', trackLength, '(sec) is less than minium track length ', minTrackLength, '(sec)' ) 
+                continue
+
+            print( 'Creating:', outFile, ' audio track length:', trackLength , '(sec)' )
+
+            goodVolumeSound = effects.normalize( sound )
+            goodVolumeSound.export(outFile, format='wav')
