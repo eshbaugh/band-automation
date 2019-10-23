@@ -68,8 +68,9 @@ class autoUtils:
 
 
 def uploadWavOutputMP3():
-	outputBaseDir = '/media/CR/'
+	# NOTE: All Directory names must end with a /
 	inputDir = '/run/media/righttap/Samsung USB/Recordings/' 
+	outputBaseDir = '/media/CR/'
 
 	au = autoUtils()
 	outputDir = au.createDateCodedOutputDirectory( outputBaseDir )
@@ -81,8 +82,9 @@ def uploadWavOutputMP3():
 
 
 def testWavToMP3():
-	outputBaseDir = './tests/testOutput/' 
+	# NOTE: All Directory names must end with a /
 	inputDir = './tests/wavs/'
+	outputBaseDir = './tests/testOutput/' 
 
 	au = autoUtils()
 
@@ -104,8 +106,9 @@ def testWavToMP3():
 	au.printFiles( './tests/' )
 
 def testMP3ToWav():
-	outputBaseDir = './tests/testOutput/' 
+	# NOTE: All Directory names must end with a /
 	inputDir = './tests/mp3s/'
+	outputBaseDir = './tests/testOutput/' 
 
 	au = autoUtils()
 
@@ -126,11 +129,24 @@ def testMP3ToWav():
 	print( "----------------- postConversion Directory --------------")
 	au.printFiles( './tests/' )
 
+def mp3ToWav():
+	# NOTE: All Directory names must end with a /
+	sourceDir = '/media/CR/KareokeVersion/source/'
+	outputDir = '/media/CR/KareokeVersion/'
+
+	sc = soundConvert( )
+	sc.MP3ToWav( sourceDir, outputDir )
+
+	print( "----------------- converted Files --------------")
+	au = autoUtils()
+	au.printFiles( outputDir )
+
 def main():
 #	testWavToMP3()
+#	testMP3ToWav()
 
-	testMP3ToWav()
-#	uploadWavOutputMP3()
+#	uploadWavOutputMP3()	
+	mp3ToWav()
 
 # Python 3 style of __name__ == '__main__'
 main()
